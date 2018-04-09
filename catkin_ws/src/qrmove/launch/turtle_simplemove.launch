@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 
 <launch>
-  <!------ Permet de lacer la commande tutlebot_bringup minimal qui connecte le robot à l'ordi---->
+
+  <!-- Permet de lacer la commande tutlebot_bringup minimal qui connecte le robot à l'ordi-->
   <include file="$(find turtlebot_bringup)/launch/minimal.launch" />
 
   <!--Paramètre le noeud "torob"-->
-  <node pkg="torob" type="move" name="move" output="screen">
+  <node pkg="qrmove" type="simplemove" name="move" output="screen">
       <param name="robot_radius" value="0.2"/>
       <param name="perception_distance" value="1.0"/>
       <param name="goal_frame_id" value="odom"/>

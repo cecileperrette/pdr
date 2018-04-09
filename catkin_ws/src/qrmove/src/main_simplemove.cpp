@@ -186,8 +186,6 @@ void move(){
 
   if( d > _robot_radius*0.2 )// !stop condition :
   {
-    if( localGoal.x() > _robot_radius*0.2 )
-    {
       cmd.linear.x= _dmax_l_speed + min( 0.5*localGoal.x()*_dmax_l_speed, _dmax_l_speed );
 
       if( 0.005f < norm_goal_y )
@@ -195,11 +193,6 @@ void move(){
 
       if( -0.005f > norm_goal_y )
         cmd.angular.z= -(min( norm_goal_y*-2.0*_max_a_speed, _max_a_speed ));
-    }
-    else
-    {
-      cmd.angular.z= _max_a_speed;
-    }
   }
 
   cout << "\tcommande linear: " << cmd.linear.x << ", angular: " << cmd.angular.z << endl;
