@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 2.8.3)
 project(qrmove)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
+
+## Add dependance to OpenCV2:
+cmake_minimum_required(VERSION 2.8)
+find_package( OpenCV REQUIRED )
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -138,6 +142,9 @@ include_directories(
 
 add_executable(simplemove src/main_simplemove.cpp)
 target_link_libraries(simplemove ${catkin_LIBRARIES})
+
+add_executable(camconnection src/main_camconnection.cpp)
+target_link_libraries(camconnection ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
