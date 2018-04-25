@@ -146,6 +146,9 @@ target_link_libraries(simplemove ${catkin_LIBRARIES})
 add_executable(camconnection src/main_camconnection.cpp)
 target_link_libraries(camconnection ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
+add_executable(qrreader src/main_qrreader.cpp)
+target_link_libraries(qrreader ${catkin_LIBRARIES} ${OpenCV_LIBS})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
