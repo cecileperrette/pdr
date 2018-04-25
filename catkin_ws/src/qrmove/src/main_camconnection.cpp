@@ -13,30 +13,44 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
     ros::NodeHandle node_private("~");
 
-    // test OpenCV:
-    if ( argc != 2 )
-    {
-        printf("usage: DisplayImage.out <Image_Path>\n");
-        return -1;
-    }
+    // test OpenCV dans ROS:
 
-    Mat image;
-    image = imread( argv[1], 1 );
+     // Image
+      IplImage *image;
+     // Capture vidéo
+     CvCapture *capture;
 
-    if ( !image.data )
-    {
-        printf("No image data \n");
-        return -1;
-    }
-    namedWindow("Display Image", WINDOW_AUTOSIZE );
-    imshow("Display Image", image);
+     // Ouvrir le flux vidéo
+     capture = cvCreateCameraCapture(CV_CAP_ANY);
+     // modifier la valeur CV_CAP_ANY pour atteindre une autre camera.
 
-//    waitKey(0);
+     // Vérifier si l'ouverture du flux est ok
+     if (!capture) {
+        printf("Ouverture du flux vidéo impossible !\n");
+        return 1;
+     }
 
-    // Start ROS loop:
-    cout << "run CamConnection" << endl;
-    ros::spin();
+     // Définition de la fenêtre
+     cvNamedWindow("GeckoGeek Window", CV_WINDOW_AUTOSIZE);
+
+     // Start ROS loop:
+     cout << "run CamConnection" << endl;
+     while( ros::ok() )
+     {
+         // On récupère une image
+        image = cvQueryFrame(capture);
+
+        // On affiche l'image dans une fenêtre
+        cvShowImage( "GeckoGeek Window", image);
+        cvWaitKey(5);
+
+        ros::spinOnce();
+     }
+
     // Properly stop the program:
+    cvReleaseCapture(&capture);
+    cvDestroyWindow("GeckoGeek Window");
+
     cout << "close CamConnection" << endl;
 
     return 0;
