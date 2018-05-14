@@ -7,7 +7,6 @@ add_compile_options(-std=c++11)
 ## Add dependance to OpenCV2:
 cmake_minimum_required(VERSION 2.8)
 find_package( OpenCV REQUIRED )
-
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -146,9 +145,14 @@ target_link_libraries(simplemove ${catkin_LIBRARIES})
 add_executable(camconnection src/main_camconnection.cpp)
 target_link_libraries(camconnection ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
-add_executable(qrreader src/main_qrreader.cpp)
-target_link_libraries(qrreader ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_executable(qrreadImage src/main_qrreadImage.cpp)
+target_link_libraries(qrreadImage ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
 
+add_executable(fuusion src/main_fuusion.cpp)
+target_link_libraries(fuusion ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
+
+add_executable(fuuusion src/main_fuuusion.cpp)
+target_link_libraries(fuuusion ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

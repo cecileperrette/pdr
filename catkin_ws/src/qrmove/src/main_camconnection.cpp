@@ -21,7 +21,7 @@ int main(int argc, char **argv)
      CvCapture *capture;
 
      // Ouvrir le flux vidéo
-     capture = cvCreateCameraCapture(CV_CAP_OPENNI_ASUS);
+     capture = cvCreateCameraCapture(0);
      // modifier la valeur CV_CAP_ANY pour atteindre une autre camera.
 
      // Vérifier si l'ouverture du flux est ok
