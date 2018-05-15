@@ -107,7 +107,7 @@ _listener= new tf::TransformListener(node);
     _cmd_publisher= node.advertise<geometry_msgs::Twist>( cmd_topic, 1 );
 
     // get the hand to ros:
-    cout << "run SimpleMove" << endl;
+    cout << "run fuuusion" << endl;
 
 
     // test OpenCV dans ROS:
@@ -155,11 +155,6 @@ _listener= new tf::TransformListener(node);
 		}
 	}
 
-	//Definir state:
-
-
-	//State action:
-
 
 	//On envoit les nouveaux goals:
 	EState last_state= _state;	
@@ -168,12 +163,12 @@ _listener= new tf::TransformListener(node);
 		goal_x=2.f;
 		goal_y=-0.5f;
 	}
-	else if(taille!=0 && taille<90){
+	else if(taille!=0 && taille<250){
 		_state= es_qrc_far;
 			goal_x=0.2f;
 			goal_y=0.f;	
 	}
-	else if(taille>=90){
+	else if(taille>=250){
 		_state= es_qrc_near;
 		cout << "SWITCH FROOOOOM " << _stateStr[last_state].c_str() << " TOOOO DODO" << endl;
 		break;
@@ -233,8 +228,8 @@ void decode(Mat &im, vector<decodedObject> &decodedObjects){
 		obj.data= symbol->get_data();
 
 		//Impression du type et du data
-		//cout << "Type : " << obj.type <<endl;
-		//cout << "Data : " << obj.data <<endl<<endl;
+		cout << "Type : " << obj.type <<endl;
+		cout << "Information : " << obj.data <<endl<<endl;
 		
 		//Obtention de la localisation
 		for(int i=0; i<symbol->get_location_size();i++){

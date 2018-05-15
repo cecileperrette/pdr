@@ -153,6 +153,7 @@ target_link_libraries(qrCam ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES}
 
 add_executable(fuuusion src/main_fuuusion.cpp src/float2.cpp)
 target_link_libraries(fuuusion ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
