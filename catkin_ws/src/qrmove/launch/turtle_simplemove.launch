@@ -12,8 +12,8 @@
       <param name="goal_frame_id" value="odom"/>
       <param name="init_goal_x" value="2.0" />
       <param name="init_goal_y" value="-0.5" />
-      <param name="linear_speed" value="0.2" />
-      <param name="angular_speed" value="1.2" />
+      <param name="linear_speed" value="0.1" />
+      <param name="angular_speed" value="1" />
       <param name="cmd_topic" value="/cmd_vel_mux/input/navi" />
       <param name="cmd_frame_id" value="base_link" />
   </node>

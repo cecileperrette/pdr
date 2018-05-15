@@ -148,10 +148,10 @@ target_link_libraries(camconnection ${catkin_LIBRARIES} ${OpenCV_LIBS})
 add_executable(qrreadImage src/main_qrreadImage.cpp)
 target_link_libraries(qrreadImage ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
 
-add_executable(fuusion src/main_fuusion.cpp)
-target_link_libraries(fuusion ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
+add_executable(qrCam src/main_qrCam.cpp)
+target_link_libraries(qrCam ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
 
-add_executable(fuuusion src/main_fuuusion.cpp)
+add_executable(fuuusion src/main_fuuusion.cpp src/float2.cpp)
 target_link_libraries(fuuusion ${catkin_LIBRARIES} ${OpenCV_LIBS} ${ZBAR_LIBRARIES} zbar )
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

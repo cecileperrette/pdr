@@ -142,7 +142,6 @@ int main(int argc, char **argv)
 	//On les affiches
 	display(im, decodedObjects);
 
-       
 
         ros::spinOnce();
      }
