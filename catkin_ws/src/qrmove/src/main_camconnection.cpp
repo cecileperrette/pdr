@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
     ros::NodeHandle node_private("~");
 
-    // test OpenCV dans ROS:
+    // OpenCV dans ROS:
 
      // Image
       IplImage *image;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
      }
 
-    // Properly stop the program:
+    // Stopper correctement le programme
     cvReleaseCapture(&capture);
     cvDestroyWindow("GeckoGeek Window");
 

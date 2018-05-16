@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// global element :
+// Elements déclarés comme globaux notamment utilisés pour les noeuds du robot :
 
 tf::Vector3 _goal;
 std::string _next_goal_frame_id, _goal_frame_id;
@@ -20,13 +20,13 @@ tf::TransformListener * _listener;
 double _dmax_l_speed, _max_a_speed;
 float _robot_radius;
 
-// Callback :
+// Fonctions définies après le main :
 void goal_subscriber(const geometry_msgs::PoseStamped & g);
 void move();
 
 int main(int argc, char **argv)
 {
-    // ROS:
+    // initialisation de ROS:
     cout << "Initialize QRMove::SimpleMove: " << endl;
     ros::init( argc, argv, "simplemove" );
     ros::NodeHandle node;
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     if( !node_private.getParam("robot_radius", _robot_radius) ) _robot_radius= 0.3f;
     if( !node_private.getParam("perception_distance", perception_distance) ) perception_distance= 2.0f;
 
-    // Configuration Movement:
+    // Configuration des mouvememts :
     std::string goal_topic, cmd_topic;
     float goal_x, goal_y;
 
@@ -66,13 +66,14 @@ int main(int argc, char **argv)
     // publisher function:
     _cmd_publisher= node.advertise<geometry_msgs::Twist>( cmd_topic, 1 );
 
-    // get the hand to ros:
     cout << "run SimpleMove" << endl;
 
 //    ros::spin();
     ros::Rate loop_rate(10);
     while( ros::ok() )
     {
+
+	// on appelle la fonction move avec les goals suivant x et y définis plus haut	
       move();
       ros::spinOnce();
       loop_rate.sleep();
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
+// permet de prévoir les déplacements et d'appliquer les changements de goal
 void goal_subscriber(const geometry_msgs::PoseStamped & g){
 
   cout << "goal_subscriber" << endl;
@@ -116,11 +118,13 @@ void goal_subscriber(const geometry_msgs::PoseStamped & g){
   }
 }
 
+
+// fonction qui va faire bouger le robot
 void move(){
 
   cout << "Move the robot" << endl;
 
-  // Wait for appropriate Transform :
+  // On attend le Transform approprié :
   if ( _goal_frame_id.compare( _cmd_frame_id ) != 0
      && _cmd_frame_id.compare( _goal_frame_id ) != 0
      && !_listener->waitForTransform( _cmd_frame_id, _goal_frame_id,
@@ -145,7 +149,7 @@ void move(){
 
   tf::Vector3 localGoal(0.f, 0.f, 0.f);
 
-  // If transforms exist move goal in scan frame:
+  // Si transform existe on fait les changements appropriés:
   if( transform_ok )
   {
     localGoal= goalToCmd * _goal;
@@ -154,7 +158,7 @@ void move(){
       << localGoal.x() << ", " << localGoal.y()
       <<  ") in " << _cmd_frame_id << endl;
 
-    // generate appropriate commande message :
+    // On affiche le mouvement prévu:
 
     cout << "\tmove to (" << _goal.x() << ", " << _goal.y()
       <<  ") in " << _goal_frame_id << " -> ("
@@ -166,7 +170,7 @@ void move(){
   }
 
 
-  // generate appropriate commande message :
+  //On génère le message :
   float d= sqrtf( (localGoal.x()*localGoal.x()
                   + localGoal.y()*localGoal.y()) );
   float norm_goal_y= localGoal.y() / d;

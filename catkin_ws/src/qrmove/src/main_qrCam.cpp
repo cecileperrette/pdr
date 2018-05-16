@@ -76,16 +76,29 @@ void display(Mat &im, vector<decodedObject> &decodedObjects){
 		int n=hull.size();
 
 		for(int j=0;j<n;j++){
-			line(im,hull[j],hull[(j+1) % n],Scalar(255,0,0),3);
+
+			// determination de la couleur de l'enveloppe en fonction des données renvoyées
+			if (decodedObjects[i].data=="pdr"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(255,0,0),3);
+			}
+			else if (decodedObjects[i].data=="robot"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,0,255),3);
+			}
+			else if (decodedObjects[i].data=="coucou"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,255,0),3);
+			}
+			else{
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,255,255),3);	
+			}
 		}
 
-
+		// calcul et affichage de la taille 
 		int max=0;
 		for(int i=0;i<n;i++){
 			if(cv::norm(hull[i]-hull[(i+1) % n])>max)
 				max=cv::norm(hull[i]-hull[(i+1) % n]);
 		}
-		cout << "Taille : " << max <<endl;
+		cout << "Taille du QRCode : " << max << "px x "<< max << "px" <<endl;
 		
 	}
 

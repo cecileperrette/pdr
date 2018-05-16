@@ -62,7 +62,7 @@ void display(Mat &im, vector<decodedObject> &decodedObjects){
 		vector<Point> points=decodedObjects[i].location;
 		vector<Point> hull;
 
-		// Si les points ne forment pas un carré on cherche une enveloppe convexe
+		// Formation d'une enveloppe convexe
 		if(points.size()>4)
 			convexHull(points, hull);
 		else

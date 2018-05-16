@@ -17,6 +17,7 @@
  *
  */
 
+// cette classe permet de travailler avec des entiers avec 2 paramètres : notamment pour travailler avec des points avec 2 coordonnées
 #include "float2.h"
 #include "tools.h"
 #include <boost/concept_check.hpp>

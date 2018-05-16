@@ -18,3 +18,7 @@
     - Ajout de "tools" servant à faire fonctionner "float2"
     - Ajout de "fuuusion", le programme final
 
+16/05/2018
+    - Modifications des fichiers "fuuusion" et "qrCam" : ajout de la différentiation des données présentes dans les QRCodes
+    - ajout des images utilisées 
+

@@ -17,6 +17,8 @@
  *
  */
 
+// cette classe permet de travailler avec des entiers avec 2 paramètres : notamment pour travailler avec des points avec 2 coordonnées
+
 // Boost :
 #include "tools.h"
 

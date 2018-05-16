@@ -40,7 +40,7 @@ std::string _stateStr[]= {"undefined", "free", "obst", "qrc_far", "qrc_near"};
 
 EState _state= es_undef;
 
-// global element :
+// Elements déclarés comme globaux notamment utilisés pour les noeuds du robot :
 
 tf::Vector3 _goal;
 std::string _next_goal_frame_id, _goal_frame_id;
@@ -79,7 +79,7 @@ _listener= new tf::TransformListener(node);
     if( !node_private.getParam("robot_radius", _robot_radius) ) _robot_radius= 0.3f;
     if( !node_private.getParam("perception_distance", perception_distance) ) perception_distance= 2.0f;
 
-    // Configuration Movement:
+    // Configuration des Mouvements:
     std::string goal_topic, cmd_topic;
     float goal_x, goal_y;
 
@@ -106,7 +106,6 @@ _listener= new tf::TransformListener(node);
     // publisher function:
     _cmd_publisher= node.advertise<geometry_msgs::Twist>( cmd_topic, 1 );
 
-    // get the hand to ros:
     cout << "run fuuusion" << endl;
 
 
@@ -133,7 +132,6 @@ _listener= new tf::TransformListener(node);
      ros::Rate loop_rate(10);
      while( ros::ok() )
      {
-	
          // On récupère une image
         image = cvQueryFrame(capture);
 	Mat im=cvarrToMat(image);	
@@ -148,15 +146,20 @@ _listener= new tf::TransformListener(node);
 	//On les affiches
 	display(im, decodedObjects);
 
+	
+	//detection des obstacles 
 	bool obstacle=false;
 	for(int i=0;i<_scan.size();i++){
-		if (_scan[i].x<0.1 || _scan[i].y<0.1){
+		if (_scan[i].x<1.5 || _scan[i].y<1.5){
 			obstacle=true;
+		}
+		else{
+			obstacle=false;
 		}
 	}
 
 
-	//On envoit les nouveaux goals:
+	//On envoit les nouveaux goals en fonction de ce qui est perçu:
 	EState last_state= _state;	
 	if (taille==0 && !obstacle){
 		_state= es_free;
@@ -171,12 +174,76 @@ _listener= new tf::TransformListener(node);
 	else if(taille>=250){
 		_state= es_qrc_near;
 		cout << "SWITCH FROOOOOM " << _stateStr[last_state].c_str() << " TOOOO DODO" << endl;
+		if (decodedObjects[decodedObjects.size()-1].data=="pdr"){
+			goal_x=0.f;
+			goal_y=0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			goal_x=0.f;
+			goal_y=-0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
+			
+		}
+		if (decodedObjects[decodedObjects.size()-1].data=="robot"){
+			goal_x=0.5f;
+			goal_y=0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			goal_x=0.5;
+			goal_y=0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			goal_x=0.5f;
+			goal_y=0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			goal_x=0.5f;
+			goal_y=0.5f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+
+			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
+		}
+		if (decodedObjects[decodedObjects.size()-1].data=="coucou"){
+			
+			goal_x=-0.5f;
+			goal_y=0.f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			goal_x=0.5f;
+			goal_y=0.f;
+			_goal.setX( goal_x );
+		    	_goal.setY( goal_y );
+			record_goal( _goal, "base_link");
+			move();
+			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
+		}
+		else{
+			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
+	
+		}
 		break;
 	}
 	else if (obstacle) {
 		_state= es_obst;
-		goal_x=-0.5;
-		goal_y=0;
+		goal_x=0;
+		goal_y=2;
 	}
 
 	if( last_state != _state ){
@@ -188,7 +255,9 @@ _listener= new tf::TransformListener(node);
 	record_goal( _goal, "base_link");
 
 	move();
+	taille=0;
 	ros::spinOnce();
+	loop_rate.sleep();
 	
      }
 
@@ -258,7 +327,18 @@ void display(Mat &im, vector<decodedObject> &decodedObjects){
 		int n=hull.size();
 
 		for(int j=0;j<n;j++){
-			line(im,hull[j],hull[(j+1) % n],Scalar(255,0,0),3);
+			if (decodedObjects[i].data=="pdr"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(255,0,0),3);
+			}
+			else if (decodedObjects[i].data=="robot"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,0,255),3);
+			}
+			else if (decodedObjects[i].data=="coucou"){
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,255,0),3);
+			}
+			else{
+				line(im,hull[j],hull[(j+1) % n],Scalar(0,255,255),3);
+			}
 		}
 
 
@@ -278,6 +358,7 @@ void display(Mat &im, vector<decodedObject> &decodedObjects){
         waitKey(5);
 }
 
+// permet de prévoir les déplacements et d'appliquer les changements de goal
 void goal_subscriber(const geometry_msgs::PoseStamped & g){
   //cout << "goal_subscriber" << endl;
   _goal_frame_id= _next_goal_frame_id;
@@ -289,13 +370,15 @@ void goal_subscriber(const geometry_msgs::PoseStamped & g){
   record_goal( _goal,  g.header.frame_id );
 }
 
+
+//change de referentiel et envoie les nouvelles directives 
 void record_goal(const tf::Vector3 & g, std::string frame_id){
 
   //cout << "goal in " << g.header.frame_id  << " frame :" << _goal.x() << ", " << _goal.y() << endl;
   //ros::Time now = g.header.stamp;
   ros::Time now = ros::Time::now();
 
-  if ( _listener->waitForTransform( _goal_frame_id, frame_id, now, ros::Duration(0.5) ) )
+  if ( _listener->waitForTransform( _goal_frame_id, frame_id, now, ros::Duration(5) ) )
   {
     tf::StampedTransform toRefGoalFrame;
 
@@ -315,6 +398,7 @@ void record_goal(const tf::Vector3 & g, std::string frame_id){
   }
 }
 
+// fonction qui va faire bouger le robot
 void move(){
 
   //cout << "Move the robot" << endl;
@@ -323,7 +407,7 @@ void move(){
   if ( _goal_frame_id.compare( _cmd_frame_id ) != 0
      && _cmd_frame_id.compare( _goal_frame_id ) != 0
      && !_listener->waitForTransform( _cmd_frame_id, _goal_frame_id,
-                                      ros::Time(0), ros::Duration(0.5) )
+                                      ros::Time(0), ros::Duration(5) )
   )
     cerr << "Command transform: " << _goal_frame_id
         << " -> " << _cmd_frame_id << " unvailable." << endl;
@@ -401,7 +485,7 @@ void move(){
   //cout << "-> end generate the command: " << endl;
 }
 
-
+// permet d'utiliser les valeurs venant du laser 
 void scan_subscriber( const sensor_msgs::LaserScan& scan ){
   std::vector<mia::Float2> lscan;
   int size= scan.ranges.size();
