@@ -116,7 +116,7 @@ _listener= new tf::TransformListener(node);
      CvCapture *capture;
 
      // Ouvrir le flux vidéo
-     capture = cvCreateCameraCapture(0);
+     capture = cvCreateCameraCapture(CV_CAP_ANY);
      // modifier la valeur CV_CAP_ANY pour atteindre une autre camera.
 
      // Vérifier si l'ouverture du flux est ok
@@ -150,12 +150,7 @@ _listener= new tf::TransformListener(node);
 	//detection des obstacles 
 	bool obstacle=false;
 	for(int i=0;i<_scan.size();i++){
-		if (_scan[i].x<1.5 || _scan[i].y<1.5){
-			obstacle=true;
-		}
-		else{
-			obstacle=false;
-		}
+		obstacle= (_scan[i].x<0.5f && _scan[i].x >0.05f);
 	}
 
 

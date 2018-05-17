@@ -22,3 +22,5 @@
     - Modifications des fichiers "fuuusion" et "qrCam" : ajout de la différentiation des données présentes dans les QRCodes
     - ajout des images utilisées 
 
+17/05/2018
+    - Correction de la detection d'obstacles 
