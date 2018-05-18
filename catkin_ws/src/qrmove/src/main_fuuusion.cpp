@@ -170,7 +170,7 @@ _listener= new tf::TransformListener(node);
 		_state= es_qrc_near;
 		cout << "SWITCH FROOOOOM " << _stateStr[last_state].c_str() << " TOOOO DODO" << endl;
 		if (decodedObjects[decodedObjects.size()-1].data=="pdr"){
-			goal_x=0.f;
+			/*goal_x=0.f;
 			goal_y=0.5f;
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
@@ -181,12 +181,12 @@ _listener= new tf::TransformListener(node);
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
 			record_goal( _goal, "base_link");
-			move();
+			move();*/
 			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
 			
 		}
 		if (decodedObjects[decodedObjects.size()-1].data=="robot"){
-			goal_x=0.5f;
+			/*goal_x=0.5f;
 			goal_y=0.5f;
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
@@ -209,13 +209,13 @@ _listener= new tf::TransformListener(node);
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
 			record_goal( _goal, "base_link");
-			move();
+			move();*/
 
 			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
 		}
 		if (decodedObjects[decodedObjects.size()-1].data=="coucou"){
 			
-			goal_x=-0.5f;
+			/*goal_x=-0.5f;
 			goal_y=0.f;
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
@@ -226,7 +226,7 @@ _listener= new tf::TransformListener(node);
 			_goal.setX( goal_x );
 		    	_goal.setY( goal_y );
 			record_goal( _goal, "base_link");
-			move();
+			move();*/
 			cout << "J'ai lu " << decodedObjects[decodedObjects.size()-1].data << endl;
 		}
 		else{
@@ -373,7 +373,7 @@ void record_goal(const tf::Vector3 & g, std::string frame_id){
   //ros::Time now = g.header.stamp;
   ros::Time now = ros::Time::now();
 
-  if ( _listener->waitForTransform( _goal_frame_id, frame_id, now, ros::Duration(5) ) )
+  if ( _listener->waitForTransform( _goal_frame_id, frame_id, now, ros::Duration(2) ) )
   {
     tf::StampedTransform toRefGoalFrame;
 
@@ -402,7 +402,7 @@ void move(){
   if ( _goal_frame_id.compare( _cmd_frame_id ) != 0
      && _cmd_frame_id.compare( _goal_frame_id ) != 0
      && !_listener->waitForTransform( _cmd_frame_id, _goal_frame_id,
-                                      ros::Time(0), ros::Duration(5) )
+                                      ros::Time(0), ros::Duration(2) )
   )
     cerr << "Command transform: " << _goal_frame_id
         << " -> " << _cmd_frame_id << " unvailable." << endl;

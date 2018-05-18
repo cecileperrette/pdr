@@ -24,3 +24,6 @@
 
 17/05/2018
     - Correction de la detection d'obstacles 
+
+18/05/2018
+    - Ajout d'un pdf de tutos 
